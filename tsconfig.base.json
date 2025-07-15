@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@work-hub/nestjs": ["libs/nestjs/src/index.ts"]
+    }
   },
+  "include": ["apps/**/*", "libs/**/*"],
   "exclude": ["node_modules", "tmp"]
 }
