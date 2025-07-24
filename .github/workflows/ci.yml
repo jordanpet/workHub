@@ -33,9 +33,13 @@ jobs:
 
       - name: Setup protoc
         uses: arduino/setup-protoc@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.workHub }}
 
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.workHub }}
 
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
       # - run: npx nx-cloud record -- echo Hello World
