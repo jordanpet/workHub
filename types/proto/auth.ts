@@ -5,7 +5,8 @@
 // source: proto/auth.proto
 
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from '@bufbuild/protobuf/wire';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
 export const protobufPackage = 'auth';
 
@@ -18,220 +19,45 @@ export interface User {
   email: string;
 }
 
-function createBaseAuthenticateRequest(): AuthenticateRequest {
-  return { token: '' };
+export const AUTH_PACKAGE_NAME = 'auth';
+
+export interface AuthServiceClient {
+  authentication(request: AuthenticateRequest): Observable<User>;
 }
 
-export const AuthenticateRequest: MessageFns<AuthenticateRequest> = {
-  encode(
-    message: AuthenticateRequest,
-    writer: BinaryWriter = new BinaryWriter()
-  ): BinaryWriter {
-    if (message.token !== '') {
-      writer.uint32(10).string(message.token);
-    }
-    return writer;
-  },
-
-  decode(
-    input: BinaryReader | Uint8Array,
-    length?: number
-  ): AuthenticateRequest {
-    const reader =
-      input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthenticateRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.token = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AuthenticateRequest {
-    return {
-      token: isSet(object.token) ? globalThis.String(object.token) : '',
-    };
-  },
-
-  toJSON(message: AuthenticateRequest): unknown {
-    const obj: any = {};
-    if (message.token !== '') {
-      obj.token = message.token;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AuthenticateRequest>, I>>(
-    base?: I
-  ): AuthenticateRequest {
-    return AuthenticateRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AuthenticateRequest>, I>>(
-    object: I
-  ): AuthenticateRequest {
-    const message = createBaseAuthenticateRequest();
-    message.token = object.token ?? '';
-    return message;
-  },
-};
-
-function createBaseUser(): User {
-  return { id: 0, email: '' };
+export interface AuthServiceController {
+  authentication(
+    request: AuthenticateRequest
+  ): Promise<User> | Observable<User> | User;
 }
 
-export const User: MessageFns<User> = {
-  encode(
-    message: User,
-    writer: BinaryWriter = new BinaryWriter()
-  ): BinaryWriter {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
+export function AuthServiceControllerMethods() {
+  return function (constructor: Function) {
+    const grpcMethods: string[] = ['authentication'];
+    for (const method of grpcMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method
+      );
+      GrpcMethod('AuthService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor
+      );
     }
-    if (message.email !== '') {
-      writer.uint32(18).string(message.email);
+    const grpcStreamMethods: string[] = [];
+    for (const method of grpcStreamMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method
+      );
+      GrpcStreamMethod('AuthService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor
+      );
     }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): User {
-    const reader =
-      input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUser();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 8) {
-            break;
-          }
-
-          message.id = reader.int32();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.email = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): User {
-    return {
-      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
-      email: isSet(object.email) ? globalThis.String(object.email) : '',
-    };
-  },
-
-  toJSON(message: User): unknown {
-    const obj: any = {};
-    if (message.id !== 0) {
-      obj.id = Math.round(message.id);
-    }
-    if (message.email !== '') {
-      obj.email = message.email;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<User>, I>>(base?: I): User {
-    return User.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User {
-    const message = createBaseUser();
-    message.id = object.id ?? 0;
-    message.email = object.email ?? '';
-    return message;
-  },
-};
-
-export interface AuthService {
-  Authentication(request: AuthenticateRequest): Promise<User>;
+  };
 }
 
-export const AuthServiceServiceName = 'auth.AuthService';
-export class AuthServiceClientImpl implements AuthService {
-  private readonly rpc: Rpc;
-  private readonly service: string;
-  constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || AuthServiceServiceName;
-    this.rpc = rpc;
-    this.Authentication = this.Authentication.bind(this);
-  }
-  Authentication(request: AuthenticateRequest): Promise<User> {
-    const data = AuthenticateRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, 'Authentication', data);
-    return promise.then((data) => User.decode(new BinaryReader(data)));
-  }
-}
-
-interface Rpc {
-  request(
-    service: string,
-    method: string,
-    data: Uint8Array
-  ): Promise<Uint8Array>;
-}
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends globalThis.Array<infer U>
-  ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-  ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
-      [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
-    };
-
-function isSet(value: any): boolean {
-  return value !== null && value !== undefined;
-}
-
-export interface MessageFns<T> {
-  encode(message: T, writer?: BinaryWriter): BinaryWriter;
-  decode(input: BinaryReader | Uint8Array, length?: number): T;
-  fromJSON(object: any): T;
-  toJSON(message: T): unknown;
-  create<I extends Exact<DeepPartial<T>, I>>(base?: I): T;
-  fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T;
-}
+export const AUTH_SERVICE_NAME = 'AuthService';

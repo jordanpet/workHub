@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky",
-    "generate-ts-proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./types ./proto/*.proto --ts_proto_opt=nestjs=true"
+    "generate-ts-proto": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./types ./proto/*.proto --ts_proto_opt=nestJs=true"
   },
   "nx": {
     "generate-ts-proto": {
@@ -49,7 +49,7 @@
     "@nx/eslint": "21.2.2",
     "@nx/eslint-plugin": "21.2.2",
     "@nx/jest": "21.2.2",
-    "@nx/js": "21.2.2",
+    "@nx/js": "^21.3.5",
     "@nx/nest": "21.2.2",
     "@nx/node": "21.2.2",
     "@nx/web": "21.2.2",

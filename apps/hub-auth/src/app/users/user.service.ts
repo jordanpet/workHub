@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma-clients/hub-auth';
+import { Prisma } from '@prisma/client';
 import { hash } from 'bcryptjs';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
-  async createUser(data: Prisma.userCreateInput) {
+
+  async createUser(data: Prisma.UserCreateInput) {
     return this.prismaService.user.create({
       data: {
         ...data,
@@ -14,10 +15,12 @@ export class UserService {
       },
     });
   }
+
   async getUsers() {
     return this.prismaService.user.findMany();
   }
-  async getUser(args: Prisma.userWhereUniqueInput) {
+
+  async getUser(args: Prisma.UserWhereUniqueInput) {
     return this.prismaService.user.findUniqueOrThrow({
       where: args,
     });

@@ -1,25 +1,36 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
-import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 
+import { AppModule } from './app/app.module';
+import { ConfigService } from '@nestjs/config';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.setGlobalPrefix(globalPrefix);
-  app.use(cookieParser());
-  const port = app.get(ConfigService).getOrThrow('PORT');
-  await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  const logger = new Logger('hub-jobs');
+
+  try {
+    const app = await NestFactory.create(AppModule, { logger });
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      })
+    );
+    app.use(cookieParser());
+    app.setGlobalPrefix('api');
+    app.enableShutdownHooks();
+
+    const config = app.get(ConfigService);
+    const port = config.get<number>('PORT') ?? 3001;
+    await app.listen(port);
+    logger.log(
+      `🚀 hub-jobs HTTP server running on http://localhost:${port}/api`
+    );
+  } catch (err) {
+    logger.error('❌ hub-jobs bootstrap failed', (err as Error).stack);
+    process.exit(1);
+  }
 }
 
 bootstrap();

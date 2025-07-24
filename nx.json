@@ -14,7 +14,6 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "6874da525f5b607edce90cfe",
   "plugins": [
     {
       "plugin": "@nx/webpack/plugin",
@@ -43,5 +42,23 @@
         "apps/hub-jobs-e2e/**/*"
       ]
     }
-  ]
+  ],
+  "targetDefaults": {
+    "build": {
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{workspaceRoot}/lib/**/*",
+        "{workspaceRoot}/proto/*"
+      ],
+      "options": {
+        "assets": [
+          {
+            "glob": "*.proto",
+            "input": "proto",
+            "output": "proto"
+          }
+        ]
+      }
+    }
+  }
 }
