@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Fibonacci } from './fibonacci.job';
+import { Fibonacci } from './jobs/fibonacci/fibonacci.job';
 import { AUTH_PACKAGE_NAME } from 'types/proto/auth';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { DiscoveryModule } from '@golevelup/nestjs-discovery';

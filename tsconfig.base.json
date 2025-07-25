@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@work-hub/nestjs": ["libs/nestjs/src/index.ts"],
-      "@workhub/nestjs/*": ["libs/nestjs/src/lib/*"]
+      "@workhub/nestjs/*": ["libs/nestjs/src/lib/*"],
+      "@workhub/pulsar": ["libs/src/index.ts"]
     }
   },
   "include": ["apps/**/*", "libs/**/*"],

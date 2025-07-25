@@ -2,10 +2,15 @@ import {
   DiscoveredClassWithMeta,
   DiscoveryService,
 } from '@golevelup/nestjs-discovery';
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
-import { JOB_METADATA_KEY } from '../decorators/job.decorator';
-import { JobMetadata } from '../interface/job-metadata.interface';
-import { AbstractJob } from './abstract.job';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+} from '@nestjs/common';
+import { JOB_METADATA_KEY } from '../app/decorators/job.decorator';
+import { JobMetadata } from '../app/interface/job-metadata.interface';
+import { AbstractJob } from './jobs/abstract.job';
 
 @Injectable()
 export class JobService implements OnModuleInit {
@@ -26,7 +31,12 @@ export class JobService implements OnModuleInit {
     if (!job) {
       throw new BadRequestException(`job ${name} does not exist.`);
     }
-    await (job.discoveredClass.instance as AbstractJob).execute();
+    if (!(job.discoveredClass.instance instanceof AbstractJob)) {
+      throw new InternalServerErrorException(
+        'Job is not an instance of AbstractJob'
+      );
+    }
+    await job.discoveredClass.instance.execute({}, job.meta.name);
     return job.meta;
   }
 }
