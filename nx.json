@@ -39,7 +39,9 @@
       "exclude": [
         "apps/hub-auth-e2e/**/*",
         "hub-jobs-e2e/**/*",
-        "apps/hub-jobs-e2e/**/*"
+        "apps/hub-jobs-e2e/**/*",
+        "hub-executor-e2e/**/*",
+        "apps/hub-executor-e2e/**/*"
       ]
     }
   ],

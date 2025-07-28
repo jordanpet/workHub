@@ -6,9 +6,11 @@ import { DiscoveryModule } from '@golevelup/nestjs-discovery';
 import { JobService } from './job.service';
 import { JobResolver } from './job.resolver';
 import { join } from 'path';
+import { PulsarModule } from '@workhub/pulsar';
 @Module({
   imports: [
     DiscoveryModule,
+    PulsarModule,
     ClientsModule.register([
       {
         name: AUTH_PACKAGE_NAME,

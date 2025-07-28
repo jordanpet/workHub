@@ -1,12 +1,10 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import * as cookieParser from 'cookie-parser';
-
 import { AppModule } from './app/app.module';
-import { ConfigService } from '@nestjs/config';
 import { AUTH_PACKAGE_NAME } from 'types/proto/auth';
+import { Init } from '@workhub/nestjs';
 
 async function bootstrap() {
   const logger = new Logger('hub-auth');
@@ -27,21 +25,7 @@ async function bootstrap() {
 
     // HTTP / GraphQL server
     const app = await NestFactory.create(AppModule, { logger });
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      })
-    );
-    app.use(cookieParser());
-    app.setGlobalPrefix('api');
-    app.enableShutdownHooks();
-
-    const config = app.get(ConfigService);
-    const port = config.get<number>('PORT') ?? 3000;
-    await app.listen(port);
-    logger.log(`🚀 HTTP server running at http://localhost:${port}/api`);
+    await Init(app);
   } catch (err) {
     logger.error('❌ hub-auth bootstrap failed', (err as Error).stack);
     process.exit(1);

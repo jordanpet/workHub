@@ -15,11 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@work-hub/nestjs": ["libs/nestjs/src/index.ts"],
+      "@workhub/nestjs": ["libs/nestjs/src/index.ts"],
       "@workhub/nestjs/*": ["libs/nestjs/src/lib/*"],
-      "@workhub/pulsar": ["libs/src/index.ts"]
+      "@workhub/pulsar": ["pulsar/src/index.ts"],
+      "@workhub/pulsar/*": ["pulsar/src/*"]
     }
   },
-  "include": ["apps/**/*", "libs/**/*"],
+  "include": ["apps/**/*", "libs/**/*", "pulsar/**/*"],
   "exclude": ["node_modules", "tmp"]
 }
