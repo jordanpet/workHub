@@ -5,6 +5,7 @@ import { join } from 'path';
 import { AppModule } from './app/app.module';
 import { AUTH_PACKAGE_NAME } from 'types/proto/auth';
 import { Init } from '@workhub/nestjs';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const logger = new Logger('hub-auth');
@@ -25,6 +26,7 @@ async function bootstrap() {
 
     // HTTP / GraphQL server
     const app = await NestFactory.create(AppModule, { logger });
+    app.use(cookieParser());
     await Init(app);
   } catch (err) {
     logger.error('❌ hub-auth bootstrap failed', (err as Error).stack);

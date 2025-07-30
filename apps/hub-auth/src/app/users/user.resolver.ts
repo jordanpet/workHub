@@ -3,7 +3,7 @@ import { User } from './models/user.model';
 import { UserService } from './user.service';
 import { CreateUserInput } from './dtos/create-user.inputs';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth/guard/gql-auth.guard';
+import { GrpcAuthGuard } from '@workhub/nestjs/guards';
 import { TokenPayload } from '../auth/token-payload.interface';
 import { CurrentUser } from '../auth/current-user.decorator';
 
@@ -16,7 +16,7 @@ export class UserResolver {
     return this.userService.createUser(createUserInput);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GrpcAuthGuard)
   @Query(() => [User], { name: 'users' })
   async getUsers(@CurrentUser() { userId }: TokenPayload) {
     return this.userService.getUsers();

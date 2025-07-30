@@ -13,7 +13,7 @@ export abstract class PulsarConsumer {
       this.onMessage.bind(this)
     );
   }
-  protected async acknowlege(message: Message) {
+  protected async acknowledge(message: Message) {
     await this.consumer.acknowledge(message);
   }
   protected abstract onMessage(message: Message): Promise<void>;

@@ -7,6 +7,9 @@ import { UserModule } from '../users/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
+import { AUTH_PACKAGE_NAME } from 'types/proto/auth';
 
 @Module({
   imports: [
@@ -21,6 +24,17 @@ import { PassportModule } from '@nestjs/passport';
       }),
       inject: [ConfigService],
     }),
+    ClientsModule.register([
+      {
+        name: AUTH_PACKAGE_NAME, // should match your proto package name
+        transport: Transport.GRPC,
+        options: {
+          package: AUTH_PACKAGE_NAME, // from your proto file package
+          protoPath: join(process.cwd(), 'proto/auth.proto'), // path to your proto
+          url: 'localhost:50051', // gRPC server URL
+        },
+      },
+    ]),
     UserModule,
   ],
   controllers: [AuthController],

@@ -24,5 +24,6 @@ import { PulsarModule } from '@workhub/pulsar';
     ]),
   ],
   providers: [Fibonacci, JobService, JobResolver],
+  exports: [ClientsModule],
 })
 export class JobModule {}

@@ -11,4 +11,4 @@ services:
     command: >
       /pulsar/bin/pulsar standalone
     ports:
-      - 6650:6650
+      - 6660:6650

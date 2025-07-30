@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config'; // ← import this
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
+import { ConfigModule } from '@nestjs/config';
+import { JobsModule } from './job/jobs.module';
 @Module({
   imports: [
+    JobsModule,
     ConfigModule.forRoot({
-      // ← add this
-      isGlobal: true, // makes ConfigService available app-wide
-      envFilePath: 'apps/hub-executor/.env', // adjust path if needed
+      isGlobal: true,
+      envFilePath: 'apps/hub-executor/.env',
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

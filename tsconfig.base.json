@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@hub-jobs/*": ["apps/hub-jobs/src/*"],
       "@workhub/nestjs": ["libs/nestjs/src/index.ts"],
       "@workhub/nestjs/*": ["libs/nestjs/src/lib/*"],
       "@workhub/pulsar": ["pulsar/src/index.ts"],
