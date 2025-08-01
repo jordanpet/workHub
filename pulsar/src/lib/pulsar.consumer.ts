@@ -9,14 +9,16 @@ export abstract class PulsarConsumer<T> {
   constructor(
     private readonly pulsarClient: PulsarClient,
     private readonly topic: string
-  ) {}
+  ) {
+    this.logger = new Logger(topic);
+  }
   async onModuleInit() {
     this.consumer = await this.pulsarClient.createConsumer(
       this.topic,
-      this.listerner.bind(this)
+      this.listener.bind(this)
     );
   }
-  private async listerner(message: Message) {
+  private async listener(message: Message) {
     try {
       const data = deserialize(message.getData()) as T;
       this.logger.debug(`Received message ${JSON.stringify(data)}`);
