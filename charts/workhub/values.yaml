@@ -1,0 +1,8 @@
+global:
+  imagePullPolicy: Always
+
+jobs:
+  enabled: true
+  replicas:
+  image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest'
+  ports: 3001
