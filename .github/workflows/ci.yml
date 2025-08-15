@@ -69,12 +69,12 @@ jobs:
           NAME=$(echo "$image" | cut -d' ' -f1)
           DOCKERFILE=$(echo "$image"   | cut -d' ' -f2)
 
-          {
+            echo "Building $NAME from $DOCKERFILE..."
             docker build \
               --tag 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/$NAME:latest \
-              -f DOCKERFILE \
-              . && docker push 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/$NAME:latest
-          } &
-          done
+              -f "$DOCKERFILE" \
+              .
 
-          wait
+              echo "Pushing $NAME to ECR..."
+              docker push 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/$NAME:latest
+          done
