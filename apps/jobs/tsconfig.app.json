@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Compile everything under the monorepo root
+    "rootDir": "../../",
+    "outDir": "../../dist/apps/jobs",
+    "module": "commonjs",
+    "target": "es2021",
+    "types": ["node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "src/**/*.ts", // your app code
+    "../../libs/**/*.ts", // shared NestJS library
+    "../../libs/pulsar/**/*.ts", // your Pulsar module
+    "../../libs/grpc/src/lib/types/**/*.ts" // generated proto types
+  ],
+  "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts", "node_modules"]
+}

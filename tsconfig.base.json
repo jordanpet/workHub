@@ -16,10 +16,20 @@
     "baseUrl": ".",
     "paths": {
       "@hub-jobs/*": ["apps/hub-jobs/src/*"],
+      "@workhub/graphql": ["libs/graphql/src/index.ts"],
+      "@workhub/graphql/*": ["libs/graphql/src/lib/*"],
+      "@workhub/grpc": ["libs/grpc/src/index.ts"],
+      "@workhub/grpc/*": ["libs/grpc/src/lib/*"],
+      "@workhub/grpc/interceptors/*": ["libs/grpc/src/lib/interceptors/*"],
+      "@workhub/grpc/types/proto/*": ["libs/grpc/src/lib/types/proto/*"],
+      "@workhub/guards": ["libs/graphql/src/lib/guards/index.ts"],
+      "@workhub/guards/*": ["libs/graphql/src/lib/guards/*"],
       "@workhub/nestjs": ["libs/nestjs/src/index.ts"],
       "@workhub/nestjs/*": ["libs/nestjs/src/lib/*"],
-      "@workhub/pulsar": ["pulsar/src/index.ts"],
-      "@workhub/pulsar/*": ["pulsar/src/*"]
+      "@workhub/prisma": ["libs/prisma/src/index.ts"],
+      "@workhub/prisma/*": ["libs/prisma/src/lib/*"],
+      "@workhub/pulsar": ["libs/pulsar/src/index.ts"],
+      "@workhub/pulsar/*": ["libs/pulsar/src/lib/*"]
     }
   },
   "include": ["apps/**/*", "libs/**/*", "pulsar/**/*"],

@@ -1,0 +1,8 @@
+{
+  "name": "@workhub/grpc",
+  "version": "0.0.0",
+  "main": "main.js",
+  "types": "index.d.ts",
+  "dependencies": {},
+  "devDependencies": {}
+}

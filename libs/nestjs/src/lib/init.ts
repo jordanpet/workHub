@@ -1,10 +1,9 @@
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 
 export async function Init(app: INestApplication) {
-  const logger = new Logger('hub-jobs');
-
   try {
     app.useGlobalPipes(
       new ValidationPipe({
@@ -16,15 +15,16 @@ export async function Init(app: INestApplication) {
     app.use(cookieParser());
     app.setGlobalPrefix('api');
     app.enableShutdownHooks();
+    app.useLogger(app.get(Logger));
 
     const config = app.get(ConfigService);
     const port = config.get<number>('PORT') ?? 3001;
     await app.listen(port);
-    logger.log(
-      `🚀 hub-jobs HTTP server running on http://localhost:${port}/api`
-    );
+    app
+      .get(Logger)
+      .log(`🚀 jobs HTTP server running on http://localhost:${port}/api`);
   } catch (err) {
-    logger.error('❌ hub-jobs bootstrap failed', (err as Error).stack);
+    app.get(Logger).error('❌ jobs bootstrap failed', (err as Error).stack);
     process.exit(1);
   }
 }

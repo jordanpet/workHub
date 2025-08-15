@@ -35,37 +35,7 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      },
-      "exclude": [
-        "apps/hub-auth-e2e/**/*",
-        "hub-jobs-e2e/**/*",
-        "apps/hub-jobs-e2e/**/*",
-        "hub-executor-e2e/**/*",
-        "apps/hub-executor-e2e/**/*"
-      ]
-    }
-  ],
-  "targetDefaults": {
-    "build": {
-      "inputs": [
-        "{projectRoot}/**/*",
-        "{workspaceRoot}/lib/**/*",
-        "{workspaceRoot}/proto/*"
-      ],
-      "options": {
-        "assets": [
-          {
-            "glob": "*.proto",
-            "input": "proto",
-            "output": "proto"
-          }
-        ]
       }
-    },
-    "@nx/js:tsc": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
     }
-  }
+  ]
 }
