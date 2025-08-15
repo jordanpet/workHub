@@ -65,9 +65,9 @@ jobs:
           "auth apps/auth/Dockerfile"
           )
 
-          for image in "${IMAGES[0]}": do
-          NAME=$(echo $image | cut -d' ' -f1)
-          DOCKERFILE=$(echo $image | cut -d' ' -f2)
+          for image in "${IMAGES[0]}"; do
+          NAME=$(echo "$image" | cut -d' ' -f1)
+          DOCKERFILE=$(echo "$image"   | cut -d' ' -f2)
 
           {
             docker Build \
