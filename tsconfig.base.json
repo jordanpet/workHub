@@ -21,7 +21,8 @@
       "@workhub/grpc": ["libs/grpc/src/index.ts"],
       "@workhub/grpc/*": ["libs/grpc/src/lib/*"],
       "@workhub/grpc/interceptors/*": ["libs/grpc/src/lib/interceptors/*"],
-      "@workhub/grpc/types/proto/*": ["libs/grpc/src/lib/types/proto/*"],
+      "@workhub/grpc/proto/*": ["libs/grpc/src/lib/proto/*"],
+      "@workhub/grpc/types/*": ["libs/grpc/src/lib/types/*"],
       "@workhub/guards": ["libs/graphql/src/lib/guards/index.ts"],
       "@workhub/guards/*": ["libs/graphql/src/lib/guards/*"],
       "@workhub/nestjs": ["libs/nestjs/src/index.ts"],
@@ -29,7 +30,7 @@
       "@workhub/prisma": ["libs/prisma/src/index.ts"],
       "@workhub/prisma/*": ["libs/prisma/src/lib/*"],
       "@workhub/pulsar": ["libs/pulsar/src/index.ts"],
-      "@workhub/pulsar/*": ["libs/pulsar/src/lib/*"]
+      "@workhub/pulsar/*": ["libs/pulsar/src/*"]
     }
   },
   "include": ["apps/**/*", "libs/**/*", "pulsar/**/*"],

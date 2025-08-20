@@ -9,7 +9,7 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { AUTH_PACKAGE_NAME } from '@workhub/grpc/types/proto';
+import { AUTH_PACKAGE_NAME } from '@workhub/grpc';
 
 @Module({
   imports: [

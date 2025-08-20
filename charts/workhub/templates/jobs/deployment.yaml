@@ -1,12 +1,12 @@
-{ {- if .Values.jobs.enabled } }
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobs
+  namespace: workhub
   labels:
     app: jobs
 spec:
-  replicas: {{ .Values.jobs.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: jobs
@@ -17,8 +17,30 @@ spec:
     spec:
       containers:
         - name: jobs
-          image: {{ .Values.jobs.image }}
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.jobs.port }}
-{{- end }}
+            - name: http
+              containerPort: 3001
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always

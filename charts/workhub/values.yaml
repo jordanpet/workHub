@@ -1,8 +1,22 @@
 global:
   imagePullPolicy: Always
 
+  pulsar:
+    namespace: pulsar
+    namespaceCreate: true
+    zookeeper:
+      replicaCount: 1
+    broker:
+      replicaCount: 1
+    bookkeeper:
+      replicaCount: 1
+    proxy:
+      replicaCount: 1
+
 jobs:
   enabled: true
-  replicas:
+  replicas: 1
   image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest'
-  ports: 3001
+  ports:
+    - name: http
+      containerPort: 3001

@@ -6,7 +6,7 @@ import {
   AuthServiceControllerMethods,
   User,
 } from '@workhub/grpc';
-import { GrpcLoggingInterceptor } from '@workhub/grpc/interceptors';
+import { GrpcLoggingInterceptor } from '@workhub/grpc';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { UserService } from '../users/user.service';
 import { TokenPayload } from './token-payload.interface';

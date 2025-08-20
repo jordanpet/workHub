@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Fibonacci } from './jobs/fibonacci/fibonacci.job';
-import { AUTH_PACKAGE_NAME } from '@workhub/grpc/types/proto';
+import { AUTH_PACKAGE_NAME } from '@workhub/grpc';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { DiscoveryModule } from '@golevelup/nestjs-discovery';
 import { JobService } from './job.service';

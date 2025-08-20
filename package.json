@@ -46,12 +46,13 @@
     "uuid": "^11.1.0"
   },
   "_moduleAliases": {
-    "@workhub/grpc": "dist/libs/grpc/main",
-    "@workhub/graphql": "dist/libs/graphql/main",
-    "@workhub/nestjs": "dist/libs/nestjs/main",
-    "@workhub/pulsar": "dist/libs/pulsar/main",
-    "@workhub/prisma": "dist/libs/prisma/main",
-    "@workhub/guards": "dist/libs/gaurds/main"
+    "@workhub/grpc": "dist/libs/grpc",
+    "@workhub/grpc/*": "dist/libs/grpc/*",
+    "@workhub/pulsar": "dist/libs/pulsar",
+    "@workhub/graphql": "dist/libs/graphql",
+    "@workhub/nestjs": "dist/libs/nestjs",
+    "@workhub/grpc/proto": "dist/libs/grpc/proto",
+    "@workhub/grpc/types": "dist/libs/grpc/types"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

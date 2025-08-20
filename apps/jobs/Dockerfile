@@ -35,6 +35,10 @@ COPY --from=builder /workspace/libs/pulsar/package.json ./libs/pulsar/package.js
 COPY --from=builder /workspace/package-lock.json ./
 COPY --from=builder /workspace/libs/grpc/src/lib/proto ./libs/grpc/src/lib/proto
 
+COPY --from=builder /workspace/dist/libs/grpc /app/dist/libs/grpc
+COPY --from=builder /workspace/dist/libs/grpc/types /app/dist/libs/grpc/types
+COPY --from=builder /workspace/libs/grpc/src/lib/proto /app/dist/libs/grpc/src/lib/proto
+
 ENV NODE_ENV=production
 
 RUN npm ci

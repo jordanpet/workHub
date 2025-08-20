@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../dist/libs/grpc",
+    "rootDir": "src",
     "declaration": true,
     "types": ["node"],
     "target": "es2021",
@@ -12,5 +13,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }
