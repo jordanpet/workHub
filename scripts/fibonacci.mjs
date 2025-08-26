@@ -1,4 +1,6 @@
-const AUTH_API_URL = `http://localhost:3000/graphql`;
+console.log('Command line arguments', process.argv);
+
+const AUTH_API_URL = process.argv[2] || `http://localhost:3000/graphql`;
 const LOGIN_MUTATION = `
 mutation Login($loginInput: LoginInput!){
 login(loginInput: $loginInput) {
@@ -7,7 +9,7 @@ login(loginInput: $loginInput) {
   }
 }
 `;
-const JOBS_API_URL = `http://localhost:3001/graphql`;
+const JOBS_API_URL = process.argv[3] || `http://localhost:3001/graphql`;
 const EXECUTE_JOB_MUTATION = `
 mutation ExecuteJob($executeJobInput: ExecuteJobInput!) {
 executeJob(executeJobInput: $executeJobInput) {
@@ -54,7 +56,7 @@ async function executeJobWithInput(executeJobInput, cookies) {
       return;
     }
 
-    const n = 1000;
+    const n = parseInt(process.argv[4], 10) || 10001;
     console.log(`Executing Fibonacci with n = ${n}`);
     const executeJobInput = {
       name: 'Fibonacci',

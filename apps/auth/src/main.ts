@@ -6,13 +6,16 @@ import { AppModule } from './app/app.module';
 import { AUTH_PACKAGE_NAME } from '@workhub/grpc';
 import { Init } from '@workhub/nestjs';
 import * as cookieParser from 'cookie-parser';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   try {
+    const app = await NestFactory.create(AppModule, { bufferLogs: true });
     //gRPC microservice
     const grpcOpts: MicroserviceOptions = {
       transport: Transport.GRPC,
       options: {
+        url: app.get(ConfigService).getOrThrow('AUTH_GRPC_SERVICE_URL'),
         package: AUTH_PACKAGE_NAME,
         protoPath: join(
           __dirname,
@@ -20,8 +23,6 @@ async function bootstrap() {
         ),
         //protoPath: join(__dirname, '../lib/proto/auth.proto'),
         //protoPath: join(__dirname, './proto/auth.proto'),
-
-        url: '0.0.0.0:50051',
       },
     };
     const grpcApp = await NestFactory.createMicroservice(AppModule, grpcOpts);
@@ -29,7 +30,6 @@ async function bootstrap() {
     console.log('✅ gRPC microservice listening on 0.0.0.0:50051');
 
     // HTTP / GraphQL server
-    const app = await NestFactory.create(AppModule, { bufferLogs: true });
     app.use(cookieParser());
     await Init(app);
     console.log('✅ HTTP / GraphQL server initialized');

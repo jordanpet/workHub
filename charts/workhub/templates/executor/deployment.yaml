@@ -1,33 +1,32 @@
+{{- if .Values.executor.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jobs
+  name: executor
   namespace: workhub
   labels:
-    app: jobs
+    app: executor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jobs
+      app: executor
   template:
     metadata:
       labels:
-        app: jobs
+        app: executor
     spec:
       containers:
-        - name: jobs
-          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest
+        - name: executor
+          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/executor:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 3001
+              containerPort: 3002
           env:
             {{- include "common.env" . | nindent 12 }}
-            - name: AUTH_GRPC_SERVICE_URL
-              Value: "auth-grpc:{{ .Value.auth.port.grpc }}"
             - name: PORT
-              value: "{{.value.jobs.port}}"
+              value: "{{.value.executor.port}}"
           resources:
             requests:
               cpu: "100m"
@@ -38,13 +37,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 3001
+              port: 3002
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ready
-              port: 3001
+              port: 3002
             initialDelaySeconds: 5
             periodSeconds: 10
       imagePullSecrets:

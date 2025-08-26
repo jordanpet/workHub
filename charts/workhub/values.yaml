@@ -1,22 +1,71 @@
 global:
-  imagePullPolicy: Always
+  imagePullPolicy: IfNotPresent
 
   pulsar:
     namespace: pulsar
     namespaceCreate: true
     zookeeper:
       replicaCount: 1
+      podmonitor:
+        enabled: false
     broker:
       replicaCount: 1
+      podmonitor:
+        enabled: false
     bookkeeper:
       replicaCount: 1
+      podmonitor:
+        enabled: false
+    autorecovery:
+      podmonitor:
+        enabled: false
     proxy:
       replicaCount: 1
+      podmonitor:
+        enabled: false
+
+    kube-prometheus-stack:
+      enabled: false
+      prometheusOperator:
+        enabled: false
+      grafana:
+        enabled: false
+      alertmanager:
+        enabled: false
+      prometheus:
+        enabled: false
+
+postgresql:
+  namespaceOverride: postgresql
+  auth:
+    username: postgres
+    password: "123456789"
+    database: workhub
 
 jobs:
   enabled: true
   replicas: 1
   image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest'
-  ports:
+  port:
     - name: http
       containerPort: 3001
+
+executor:
+  enabled: true
+  replicas: 1
+  image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/executor:latest'
+  port:
+    - name: http
+      containerPort: 3002
+
+auth:
+  enabled: true
+  replicas: 1
+  image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/auth:latest'
+  port:
+    http: 3000
+    grpc: 50051
+  jwt:
+    secret: 22h4gg/d?ddd34df45frh54rdheru5859gib9fg
+    expirationMs: "28800000"
+

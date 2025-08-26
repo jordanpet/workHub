@@ -1,0 +1,57 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "creationTimestamp": "2025-08-21T02:58:20Z",
+    "deletionTimestamp": "2025-08-22T22:58:59Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "workhub"
+    },
+    "name": "workhub",
+    "resourceVersion": "29165",
+    "uid": "4eda6dbb-a205-4cfb-a889-9ac947af71a0"
+  },
+  "spec": {
+    "finalizers": []
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2025-08-22T22:59:05Z",
+        "message": "All resources successfully discovered",
+        "reason": "ResourcesDiscovered",
+        "status": "False",
+        "type": "NamespaceDeletionDiscoveryFailure"
+      },
+      {
+        "lastTransitionTime": "2025-08-22T22:59:05Z",
+        "message": "All legacy kube types successfully parsed",
+        "reason": "ParsedGroupVersions",
+        "status": "False",
+        "type": "NamespaceDeletionGroupVersionParsingFailure"
+      },
+      {
+        "lastTransitionTime": "2025-08-22T22:59:05Z",
+        "message": "All content successfully deleted, may be waiting on finalization",
+        "reason": "ContentDeleted",
+        "status": "False",
+        "type": "NamespaceDeletionContentFailure"
+      },
+      {
+        "lastTransitionTime": "2025-08-22T22:59:05Z",
+        "message": "Some resources are remaining: deployments.apps has 2 resource instances, persistentvolumeclaims. has 1 resource instances, secrets. has 2 resource instances, serviceaccounts. has 2 resource instances, services. has 2 resource instances, vmagents.operator.victoriametrics.com has 1 resource instances, vmsingles.operator.victoriametrics.com has 1 resource instances",
+        "reason": "SomeResourcesRemain",
+        "status": "True",
+        "type": "NamespaceContentRemaining"
+      },
+      {
+        "lastTransitionTime": "2025-08-22T22:59:05Z",
+        "message": "Some content in the namespace has finalizers remaining: apps.victoriametrics.com/finalizer in 11 resource instances",
+        "reason": "SomeFinalizersRemain",
+        "status": "True",
+        "type": "NamespaceFinalizersRemaining"
+      }
+    ],
+    "phase": "Terminating"
+  }
+}
