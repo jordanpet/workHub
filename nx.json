@@ -35,7 +35,8 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      }
+      },
+      "exclude": ["products-e2e/**/*", "apps/products-e2e/**/*"]
     }
   ]
 }

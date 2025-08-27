@@ -13,12 +13,12 @@ export async function Init(app: INestApplication) {
       })
     );
     app.use(cookieParser());
-    app.setGlobalPrefix('api');
-    app.enableShutdownHooks();
+    app.setGlobalPrefix('api'); //check this later on (globalPrefix)
+    app.enableShutdownHooks(); // check this on
     app.useLogger(app.get(Logger));
 
     const config = app.get(ConfigService);
-    const port = config.get<number>('PORT') ?? 3001;
+    const port = config.get<number>('PORT') ?? 3003; // app.get(ConfigService).getOrThrow('PORT');
     await app.listen(port);
     app
       .get(Logger)

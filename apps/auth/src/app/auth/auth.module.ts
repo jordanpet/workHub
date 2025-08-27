@@ -9,7 +9,7 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { AUTH_PACKAGE_NAME } from '@workhub/grpc';
+import { Package } from '@workhub/grpc';
 
 @Module({
   imports: [
@@ -26,10 +26,10 @@ import { AUTH_PACKAGE_NAME } from '@workhub/grpc';
     }),
     ClientsModule.register([
       {
-        name: AUTH_PACKAGE_NAME,
+        name: Package.AUTH,
         transport: Transport.GRPC,
         options: {
-          package: AUTH_PACKAGE_NAME,
+          package: Package.AUTH,
           protoPath: join(
             __dirname,
             '../../../libs/grpc/src/lib/proto/auth.proto'

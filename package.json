@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": " nx run-many -t serve -p auth jobs executor"
+    "start": " nx run-many -t serve -p auth jobs executor products --parallel 4"
   },
   "workspaces": [
     "apps/*",
@@ -63,6 +63,7 @@
     "@nx/jest": "21.3.5",
     "@nx/js": "21.3.5",
     "@nx/nest": "21.3.5",
+    "@nx/node": "21.3.5",
     "@nx/web": "21.3.5",
     "@nx/webpack": "^21.3.5",
     "@nx/workspace": "21.3.5",

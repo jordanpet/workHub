@@ -15,11 +15,11 @@ async function bootstrap() {
     const grpcOpts: MicroserviceOptions = {
       transport: Transport.GRPC,
       options: {
-        url: app.get(ConfigService).getOrThrow('AUTH_GRPC_SERVICE_URL'),
-        package: Package.AUTH,
+        url: app.get(ConfigService).getOrThrow('PRODUCTS_GRPC_SERVICE_URL'),
+        package: Package.PRODUCTS,
         protoPath: join(
           __dirname,
-          '../../../libs/grpc/src/lib/proto/auth.proto'
+          '../../../libs/grpc/src/lib/proto/products.proto'
         ),
         //protoPath: join(__dirname, '../lib/proto/auth.proto'),
         //protoPath: join(__dirname, './proto/auth.proto'),
