@@ -40,7 +40,12 @@ postgresql:
   auth:
     username: postgres
     password: "123456789"
-    database: workhub
+  primary:
+    initdb:
+      scripts:
+        create-dbs.sql: |
+          CREATE DATABASE auth;
+          CREATE DATABASE products;
 
 jobs:
   enabled: true
@@ -68,4 +73,12 @@ auth:
   jwt:
     secret: 22h4gg/d?ddd34df45frh54rdheru5859gib9fg
     expirationMs: "28800000"
+
+products:
+  enabled: true
+  replicas: 1
+  image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/products:latest'
+  port:
+    http: 3003
+    grpc: 5001
 

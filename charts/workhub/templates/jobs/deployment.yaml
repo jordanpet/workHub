@@ -19,6 +19,9 @@ spec:
         - name: jobs
           image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: uploads-volume
+              mountPath: /app/apps/jobs/uploads
           ports:
             - name: http
               containerPort: 3001
@@ -28,6 +31,10 @@ spec:
               Value: "auth-grpc:{{ .Value.auth.port.grpc }}"
             - name: PORT
               value: "{{.value.jobs.port}}"
+      volumes:
+        - name: uploads-volume
+          persistentVolumeClaim:
+            clainName: uploads-pvc
           resources:
             requests:
               cpu: "100m"

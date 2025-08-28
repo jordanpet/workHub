@@ -1,36 +1,36 @@
-{{- if .Values.auth.enabled }}
+{{- if .Values.products.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth
+  name: products
   namespace: workhub
   labels:
-    app: auth
+    app: products
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: products
   template:
     metadata:
       labels:
-        app: auth
+        app: products
     spec:
       initContainers:
-        - name: prisma-migrate
-          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/auth:latest
+        - name: drizzle-migrate
+          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/products:latest
           imagePullPolicy: IfNotPresent
           command: ["sh", "-c"]
           args:
             - |
-              npx prisma migrate deploy --schema=apps/auth/prisma/schema.prisma
+              cd apps/products && npx drizzle-kit migrate
           env:
             {{- include "common.env" . | nindent 12 }}
         - name: DATABASE_URL
-          value: postgresql://postgres:postgres@{{ .Release.Name }}-postgresql.postgresql.svc.cluster.local:5432/auth
+          value: postgresql://postgres:postgres@{{ .Release.Name }}-postgresql.postgresql.svc.cluster.local:5432/products
       containers:
-        - name: auth
-          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/auth:latest
+        - name: products
+          image: 570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/products:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -39,15 +39,11 @@ spec:
           env:
             {{- include "common.env" . | nindent 12 }}
             - name: PORT
-              value: "{{.Values.auth.port.http }}"
-            - name: JWT_SECRET
-              value: "{{ .Values.auth.jwt.secret }}"
-            - name: JWT_EXPIRATION_MS
-              value: "{{ .Values.auth.jwt.expirationMs }}"
-            - name: AUTH_GRPC_SERVICE_URL
-              value: "0.0.0.0:{{ .Values.auth.port.grpc }}"
+              value: "{{ .Values.products.port.http }}"
+            - name: PRODUCTS_GRPC_SERVICE_URL
+              value: "0.0.0.0:{{ .Values.products.port.grpc }}"
             - name: DATABASE_URL
-              value: postgresql://postgres:postgres@{{ .Release.Name }}-postgresql.postgresql.svc.cluster.local:5432/auth
+              value: postgresql://postgres:postgres@{{ .Release.Name }}-postgresql.postgresql.svc.cluster.local:5432/products
           resources:
             requests:
               cpu: "100m"
