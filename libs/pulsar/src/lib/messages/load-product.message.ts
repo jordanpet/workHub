@@ -27,7 +27,7 @@ export class LoadProductMessage {
   @IsNumber()
   @Min(0)
   @Max(5)
-  rating: number;
+  reting: number;
 
   @IsString()
   @IsNotEmpty()
