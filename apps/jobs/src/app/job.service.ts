@@ -13,19 +13,24 @@ import { JobMetadata } from './interface/job-metadata.interface';
 import { AbstractJob } from './jobs/abstract.job';
 import { readFileSync } from 'fs';
 import { UPLOAD_FILE_PATH } from './uploads/upload';
+import { PrismaService } from './prisma/prisma.service';
+import { JobStatus } from './models/job-status.enum';
 
 @Injectable()
 export class JobService implements OnModuleInit {
   private jobs: DiscoveredClassWithMeta<JobMetadata>[] = [];
 
-  constructor(private readonly discoveryService: DiscoveryService) {}
+  constructor(
+    private readonly discoveryService: DiscoveryService,
+    private readonly prismaService: PrismaService
+  ) {}
 
   async onModuleInit() {
     this.jobs = await this.discoveryService.providersWithMetaAtKey<JobMetadata>(
       JOB_METADATA_KEY
     );
   }
-  getJob() {
+  getJobMetadata() {
     return this.jobs.map((job) => job.meta);
   }
   async executeJob(name: string, data: any) {
@@ -38,11 +43,41 @@ export class JobService implements OnModuleInit {
         'Job is not an instance of AbstractJob'
       );
     }
-    await job.discoveredClass.instance.execute(
+    return job.discoveredClass.instance.execute(
       data.fileName ? this.getFile(data.fileName) : data,
       job.meta.name
     );
-    return job.meta;
+  }
+  async getJobs() {
+    return this.prismaService.job.findMany();
+  }
+
+  async getJob(jobId: number) {
+    return this.prismaService.job.findUnique({
+      where: { id: jobId },
+    });
+  }
+  async acknowledge(jobId: number) {
+    const job = await this.prismaService.job.findUnique({
+      where: { id: jobId },
+    });
+    if (!job) {
+      throw new BadRequestException(`job with id ${jobId} does not exist `);
+    }
+    if (job.ended) {
+      return;
+    }
+    const updatedJob = await this.prismaService.job.update({
+      where: { id: jobId },
+      data: { completed: { increment: 1 } },
+    });
+    if (updatedJob.completed === job.size) {
+      await this.prismaService.job.update({
+        where: { id: jobId },
+        data: { status: JobStatus.COMPLETED, ended: new Date() },
+      });
+    }
+    return updatedJob;
   }
 
   private getFile(fileName?: string) {

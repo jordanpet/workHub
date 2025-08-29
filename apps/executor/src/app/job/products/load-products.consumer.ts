@@ -6,32 +6,30 @@ import {
   ProductServiceClient,
 } from '@workhub/grpc';
 import { Jobs } from '@workhub/nestjs';
-import {
-  LoadProductMessage,
-  PulsarClient,
-  PulsarConsumer,
-} from '@workhub/pulsar';
+import { LoadProductMessage, PulsarClient } from '@workhub/pulsar';
 import { firstValueFrom } from 'rxjs';
+import { JobConsumer } from '../job.consumer';
 
 @Injectable()
 export class LoadProductConsumer
-  extends PulsarConsumer<LoadProductMessage>
+  extends JobConsumer<LoadProductMessage>
   implements OnModuleInit
 {
   private productsService: ProductServiceClient;
   constructor(
     pulsarClient: PulsarClient,
-    @Inject(Package.PRODUCTS) private client: ClientGrpc
+    @Inject(Package.JOBS) clientJobs: ClientGrpc,
+    @Inject(Package.PRODUCTS) private clientProduct: ClientGrpc
   ) {
-    super(pulsarClient, Jobs.LOAD_PRODUCTS);
+    super(Jobs.LOAD_PRODUCTS, pulsarClient, clientJobs);
   }
 
   async onModuleInit() {
-    this.productsService = this.client.getService(PRODUCT_SERVICE_NAME);
+    this.productsService = this.clientProduct.getService(PRODUCT_SERVICE_NAME);
     await super.onModuleInit();
   }
 
-  protected async onMessage(data: LoadProductMessage) {
+  protected async execute(data: LoadProductMessage) {
     await firstValueFrom(this.productsService.createProduct(data));
   }
 }

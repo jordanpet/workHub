@@ -46,15 +46,15 @@ postgresql:
         create-dbs.sql: |
           CREATE DATABASE auth;
           CREATE DATABASE products;
+          CREATE DATABASE jobs:
 
 jobs:
   enabled: true
   replicas: 1
   image: '570489932149.dkr.ecr.af-south-1.amazonaws.com/workhub/jobs:latest'
   port:
-    - name: http
-      containerPort: 3001
-
+    http: 3001
+    grpc: 50004
 executor:
   enabled: true
   replicas: 1

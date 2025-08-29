@@ -6,11 +6,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { LoggerModule } from '@workhub/nestjs';
 import { GqlLoggingPlugin } from '@workhub/graphql';
 import { UploadModule } from './uploads/upload.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     LoggerModule,
     UploadModule,
+    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: 'apps/jobs/.env',
