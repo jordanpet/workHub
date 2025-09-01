@@ -5,7 +5,7 @@ import { Init } from '@workhub/nestjs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  await Init(app);
+  await Init(app, 'executor');
 }
 
 bootstrap();

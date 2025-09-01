@@ -31,7 +31,7 @@ async function bootstrap() {
 
     // HTTP / GraphQL server
     app.use(cookieParser());
-    await Init(app);
+    await Init(app, 'auth');
     console.log('✅ HTTP / GraphQL server initialized');
   } catch (err) {
     console.error('❌ auth bootstrap failed', (err as Error).stack);

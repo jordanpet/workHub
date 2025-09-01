@@ -1,9 +1,17 @@
 global:
   imagePullPolicy: IfNotPresent
 
+  ingress:
+    alb : false
+
+  persistance:
+    abs: false
+
   pulsar:
     namespace: pulsar
     namespaceCreate: true
+    components:
+      proxy: false
     zookeeper:
       replicaCount: 1
       podmonitor:
@@ -20,7 +28,6 @@ global:
       podmonitor:
         enabled: false
     proxy:
-      replicaCount: 1
       podmonitor:
         enabled: false
 
@@ -73,6 +80,7 @@ auth:
   jwt:
     secret: 22h4gg/d?ddd34df45frh54rdheru5859gib9fg
     expirationMs: "28800000"
+    secure: false
 
 products:
   enabled: true

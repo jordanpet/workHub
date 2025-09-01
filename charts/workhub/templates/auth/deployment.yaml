@@ -40,8 +40,12 @@ spec:
             {{- include "common.env" . | nindent 12 }}
             - name: PORT
               value: "{{.Values.auth.port.http }}"
+            {{- if .Values.auth.jwt.secure }}
+            - name: SECURE_COOKIE
+              value: "{{ .Values.auth.jwt.secure}}"
             - name: JWT_SECRET
               value: "{{ .Values.auth.jwt.secret }}"
+            {{- end }}
             - name: JWT_EXPIRATION_MS
               value: "{{ .Values.auth.jwt.expirationMs }}"
             - name: AUTH_GRPC_SERVICE_URL

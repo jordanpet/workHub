@@ -3,7 +3,7 @@ import { Logger } from 'nestjs-pino';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 
-export async function Init(app: INestApplication) {
+export async function Init(app: INestApplication, globalPrefix = 'api') {
   try {
     app.useGlobalPipes(
       new ValidationPipe({
@@ -13,7 +13,7 @@ export async function Init(app: INestApplication) {
       })
     );
     app.use(cookieParser());
-    app.setGlobalPrefix('api'); //check this later on (globalPrefix)
+    app.setGlobalPrefix(globalPrefix);
     app.enableShutdownHooks(); // check this on
     app.useLogger(app.get(Logger));
 

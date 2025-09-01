@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: Ingress
+  {{- if .Values.ingress.alb }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: my-ingress-group
+    alb.ingress.kubernetes.io/listen-ports: '[{ "HTTP": 80}, { "HTTPS": 443 }]'
+    alb.ingress.kubernetes.io/certificate-arn:
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+  {{- end }}
+spec:
+  {{- if .Values.ingress.alb }}
+  ingressClassName: alb
+  {{- end }}
+  rules:
+      - host: {{ if .Values.ingress.alb }} workhub-backend.com {{ else }} workhub.local {{ end }}
+      - http:
+        {{- if .Values.ingress.alb }}
+        host: workhub-api.com
+        {{- else }}
+        host: workhub.local
+        {{- end }}
+        paths:
+          - path: /jobs
+            pathType: Prefix
+            backend:
+              service:
+                name: jobs-http
+                port:
+                  number: {{ .Values.jobs.port.http}}
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-http
+                port:
+                  number: {{ .Values.auth.port.http}}
