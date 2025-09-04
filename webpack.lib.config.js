@@ -10,6 +10,7 @@ module.exports = {
       target: 'node',
       compiler: 'tsc',
       main: './src/index.ts',
+      sourceMap: true,
       tsConfig: './tsconfig.lib.json',
       optimization: false,
       outputHashing: 'none',

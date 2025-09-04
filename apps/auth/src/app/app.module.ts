@@ -21,15 +21,15 @@ import { GqlLoggingPlugin } from '@workhub/graphql';
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      plugins: [new GqlLoggingPlugin()],
       useGlobalPrefix: true,
+      autoSchemaFile: true,
+      context: ({ req, res }) => ({ req, res }),
+      plugins: [new GqlLoggingPlugin()],
       playground: {
         settings: {
           'request.credentials': 'include',
         },
       },
-      context: ({ req, res }) => ({ req, res }),
-      autoSchemaFile: true,
     }),
     UserModule,
     AuthModule,

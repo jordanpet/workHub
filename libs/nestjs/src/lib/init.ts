@@ -12,8 +12,8 @@ export async function Init(app: INestApplication, globalPrefix = 'api') {
         transform: true,
       })
     );
-    app.use(cookieParser());
     app.setGlobalPrefix(globalPrefix);
+    app.use(cookieParser());
     app.enableShutdownHooks(); // check this on
     app.useLogger(app.get(Logger));
 
